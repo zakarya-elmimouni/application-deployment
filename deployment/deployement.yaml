@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: humidity-api
+  labels:
+    app: humidity-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: humidity-api
+  template:
+    metadata:
+      labels:
+        app: humidity-api
+    spec:
+      containers:
+        - name: humidity-container
+          image: ahmedkhairaldin/humidity_prediction:main
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MLFLOW_TRACKING_URI
+              value: "https://user-akhairaldin-mlflow.user.lab.sspcloud.fr"
+            - name: MLFLOW_TRACKING_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secret
+                  key: MLFLOW_TRACKING_USERNAME
+            - name: MLFLOW_TRACKING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secret
+                  key: MLFLOW_TRACKING_PASSWORD

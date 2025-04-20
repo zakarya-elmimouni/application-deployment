@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: humidity-prediction
+spec:
+  project: default
+  source:
+1    repoURL: https://github.com/zakarya-elmimouni/application-deployment.git
+2    targetRevision: main
+3    path: deployment
+  destination:
+    server: https://kubernetes.default.svc
+4    namespace: user-akhairaldin
+  syncPolicy:
+    automated:
+      selfHeal: true
